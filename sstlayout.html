@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sharanya Spots Talent - Onboarding</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #4f46e5;
+        --primary-dark: #4338ca;
+        --accent: #f59e0b;
+        --neutral-bg: #f1f5f9; /* slate-100 */
+        --text-primary: #1e293b; /* slate-800 */
+        --text-secondary: #64748b; /* slate-500 */
+        --radius: 0.75rem;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--neutral-bg);
+        color: var(--text-primary);
+      }
+
+      .main-container {
+        transition: all 0.3s ease-out;
+      }
+
+      .step-container {
+        position: relative;
+        min-height: 450px; /* Ensures container doesn't jump in size */
+        overflow: hidden;
+      }
+
+      .form-step {
+        position: absolute;
+        width: 100%;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        transform: translateX(30px);
+      }
+
+      .form-step.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0);
+      }
+
+      .form-step.previous {
+        transform: translateX(-30px);
+      }
+
+      .selection-card {
+        background-color: white;
+        border: 2px solid #e2e8f0; /* slate-200 */
+        border-radius: var(--radius);
+        padding: 1rem 1.25rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .selection-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.05);
+      }
+      .selection-card.selected {
+        border-color: var(--primary);
+        background-color: #f0f2ff;
+        font-weight: 600;
+      }
+
+      .form-input-group {
+        text-align: left;
+      }
+      .form-label {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+      .form-input,
+      .form-textarea,
+      .form-select {
+        width: 100%;
+        border: 2px solid #cbd5e1; /* slate-300 */
+        border-radius: var(--radius);
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        background-color: white;
+      }
+      .form-input:focus,
+      .form-textarea:focus,
+      .form-select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+
+      .btn {
+        font-weight: 600;
+        border-radius: var(--radius);
+        padding: 0.75rem 1.5rem;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+      }
+      .btn-primary:disabled {
+        background-color: #a5b4fc;
+        cursor: not-allowed;
+      }
+      .btn-secondary {
+        background-color: white;
+        color: var(--text-secondary);
+        border: 1px solid #e2e8f0;
+      }
+      .btn-secondary:hover {
+        background-color: #f8fafc;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-4">
+    <main
+      class="w-full max-w-3xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-xl main-container"
+    >
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <h1 class="text-3xl font-bold text-slate-800">
+          Welcome to the Spotlight!
+        </h1>
+        <p class="text-slate-500 mt-2">
+          Let's build your professional profile. It only takes a few minutes.
+        </p>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mb-8">
+        <div class="flex justify-between items-center mb-2">
+          <span id="progress-title" class="text-sm font-semibold text-slate-600"
+            >Profile Completion</span
+          >
+          <span id="progress-text" class="text-sm font-bold text-amber-600"
+            >0%</span
+          >
+        </div>
+        <div class="w-full bg-slate-200 rounded-full h-3">
+          <div
+            id="progress-bar"
+            class="bg-amber-500 h-3 rounded-full transition-all duration-500"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Steps Container -->
+      <div class="step-container">
+        <!-- Step 1: Profession -->
+        <div
+          class="form-step"
+          data-step="1"
+          data-title="Tell us about your talent"
+        >
+          <h2 class="text-xl font-semibold mb-6 text-left">
+            Your Primary Talent
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="selection-card"
+              data-type="profession"
+              data-value="actor"
+            >
+              <span class="text-2xl">🎭</span> Actor
+            </div>
+            <div
+              class="selection-card"
+              data-type="profession"
+              data-value="musician"
+            >
+              <span class="text-2xl">🎵</span> Musician
+            </div>
+            <div
+              class="selection-card"
+              data-type="profession"
+              data-value="dancer"
+            >
+              <span class="text-2xl">💃</span> Dancer
+            </div>
+          </div>
+          <input type="hidden" name="profession" id="profession" />
+        </div>
+
+        <!-- Step 2: Experience Level (Conditional) -->
+        <div
+          class="form-step"
+          data-step="2"
+          data-title="Your Experience"
+          data-condition='{"field": "profession", "value": "actor"}'
+        >
+          <h2 class="text-xl font-semibold mb-6 text-left">
+            What is your experience level?
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="selection-card"
+              data-type="experienceLevel"
+              data-value="fresher"
+            >
+              Fresher
+            </div>
+            <div
+              class="selection-card"
+              data-type="experienceLevel"
+              data-value="experienced"
+            >
+              Experienced
+            </div>
+          </div>
+          <input type="hidden" name="experienceLevel" id="experienceLevel" />
+        </div>
+
+        <!-- Step 3: Basic Info -->
+        <div class="form-step" data-step="3" data-title="Let's get the basics">
+          <h2 class="text-xl font-semibold mb-6 text-left">
+            Basic Information
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="form-input-group">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                class="form-input"
+                placeholder="e.g., Priya Sharma"
+              />
+            </div>
+            <div class="form-input-group">
+              <label for="dob" class="form-label">Date of Birth</label>
+              <input type="date" id="dob" name="dob" class="form-input" />
+            </div>
+            <div class="form-input-group">
+              <label for="location" class="form-label">Current Location</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                class="form-input"
+                placeholder="e.g., Mumbai, India"
+              />
+            </div>
+            <div class="form-input-group">
+              <label for="languages" class="form-label">Languages Known</label>
+              <input
+                type="text"
+                id="languages"
+                name="languages"
+                class="form-input"
+                placeholder="e.g., Tamil, English"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Talent Details -->
+        <div
+          class="form-step"
+          data-step="4"
+          data-title="Your Professional Profile"
+        >
+          <h2 class="text-xl font-semibold mb-6 text-left">Your Details</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="form-input-group">
+              <label for="height" class="form-label">Height (cm)</label>
+              <input
+                type="number"
+                id="height"
+                name="height"
+                class="form-input"
+                placeholder="e.g., 175"
+              />
+            </div>
+            <div class="form-input-group">
+              <label for="weight" class="form-label">Weight (kg)</label>
+              <input
+                type="number"
+                id="weight"
+                name="weight"
+                class="form-input"
+                placeholder="e.g., 70"
+              />
+            </div>
+            <div class="form-input-group sm:col-span-2">
+              <label for="skills" class="form-label">Special Skills</label>
+              <input
+                type="text"
+                id="skills"
+                name="skills"
+                class="form-input"
+                placeholder="e.g., Martial Arts, Singing, Instrument"
+              />
+            </div>
+            <div class="form-input-group sm:col-span-2">
+              <label for="bio" class="form-label">Professional Bio</label>
+              <textarea
+                id="bio"
+                name="bio"
+                rows="4"
+                class="form-textarea"
+                placeholder="Tell us about your experience, skills, and passion..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5: Media & Links -->
+        <div class="form-step" data-step="5" data-title="Showcase Your Work">
+          <h2 class="text-xl font-semibold mb-6 text-left">Media and Links</h2>
+          <div class="space-y-6">
+            <div class="form-input-group">
+              <label for="headshot" class="form-label">Upload Headshot</label>
+              <input
+                type="file"
+                id="headshot"
+                name="headshot"
+                class="form-input file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+              />
+            </div>
+            <div class="form-input-group">
+              <label for="portfolioUrl" class="form-label"
+                >Portfolio/Showreel Link (YouTube, etc.)</label
+              >
+              <input
+                type="url"
+                id="portfolioUrl"
+                name="portfolioUrl"
+                class="form-input"
+                placeholder="https://youtube.com/your-showreel"
+              />
+            </div>
+            <div class="form-input-group">
+              <label for="socialUrl" class="form-label"
+                >Social Media Link (Instagram)</label
+              >
+              <input
+                type="url"
+                id="socialUrl"
+                name="socialUrl"
+                class="form-input"
+                placeholder="https://instagram.com/yourhandle"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Final Step -->
+        <div class="form-step" data-step="6">
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-3xl font-bold mb-2">You're All Set!</h2>
+            <p class="text-slate-500">
+              Your profile is ready for review. We're excited to have you on
+              board.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div id="footer-nav" class="mt-10 flex justify-between items-center">
+        <button type="button" id="back-btn" class="btn btn-secondary">
+          Back
+        </button>
+        <button type="button" id="next-btn" class="btn btn-primary ml-auto">
+          Next
+        </button>
+        <button type="button" id="submit-btn" class="btn btn-primary ml-auto">
+          Submit Profile
+        </button>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const allSteps = Array.from(document.querySelectorAll(".form-step"));
+        const nextBtn = document.getElementById("next-btn");
+        const backBtn = document.getElementById("back-btn");
+        const submitBtn = document.getElementById("submit-btn");
+        const progressBar = document.getElementById("progress-bar");
+        const progressText = document.getElementById("progress-text");
+        const progressTitle = document.getElementById("progress-title");
+        const footerNav = document.getElementById("footer-nav");
+
+        let history = [0]; // Start with the index of the first step
+        const formData = {};
+
+        const getVisibleSteps = () => {
+          return allSteps.filter((step) => {
+            const conditionAttr = step.dataset.condition;
+            if (!conditionAttr) return true; // Always show non-conditional steps
+            try {
+              const condition = JSON.parse(conditionAttr);
+              return formData[condition.field] === condition.value;
+            } catch (e) {
+              return false;
+            }
+          });
+        };
+
+        const getCurrentStep = () => {
+          return allSteps[history[history.length - 1]];
+        };
+
+        const updateView = () => {
+          const visibleSteps = getVisibleSteps();
+          const totalVisibleSteps = visibleSteps.length;
+          const activeStep = getCurrentStep();
+
+          let currentVisibleIndex = visibleSteps.indexOf(activeStep);
+
+          // Update Progress Bar
+          const progress =
+            ((currentVisibleIndex + 1) / totalVisibleSteps) * 100;
+          progressBar.style.width = `${progress}%`;
+          progressText.textContent = `${Math.round(progress)}%`;
+          progressTitle.textContent =
+            activeStep.dataset.title || "Profile Completion";
+
+          // Show active step and hide others
+          allSteps.forEach((step) =>
+            step.classList.remove("active", "previous")
+          );
+          activeStep.classList.add("active");
+
+          const hasCards = activeStep.querySelector(".selection-card");
+
+          if (hasCards) {
+            footerNav.style.display = "none"; // Hide nav for card selection steps
+            backBtn.style.display = history.length > 1 ? "inline-flex" : "none";
+            if (history.length > 1) footerNav.style.display = "flex"; // Show nav if back is possible
+          } else {
+            footerNav.style.display = "flex";
+            backBtn.style.display = history.length > 1 ? "inline-flex" : "none";
+            const isFinalStep = currentVisibleIndex === totalVisibleSteps - 1;
+            const isLastQuestionStep =
+              currentVisibleIndex === totalVisibleSteps - 2;
+
+            nextBtn.style.display =
+              !isFinalStep && !isLastQuestionStep ? "inline-flex" : "none";
+            submitBtn.style.display = isLastQuestionStep
+              ? "inline-flex"
+              : "none";
+
+            if (isFinalStep) {
+              footerNav.style.display = "none";
+            }
+          }
+        };
+
+        const storeFormData = () => {
+          const currentStep = getCurrentStep();
+          currentStep.querySelectorAll("input, textarea").forEach((input) => {
+            if (input.name) formData[input.name] = input.value;
+          });
+        };
+
+        const goToNextStep = () => {
+          storeFormData();
+
+          const visibleSteps = getVisibleSteps();
+          let currentVisibleIndex = visibleSteps.indexOf(getCurrentStep());
+
+          if (currentVisibleIndex < visibleSteps.length - 1) {
+            const nextStep = visibleSteps[currentVisibleIndex + 1];
+            getCurrentStep().classList.add("previous");
+            history.push(allSteps.indexOf(nextStep));
+
+            setTimeout(updateView, 50);
+          }
+        };
+
+        const goToPreviousStep = () => {
+          storeFormData();
+          getCurrentStep().classList.add("previous");
+          history.pop();
+          setTimeout(updateView, 50);
+        };
+
+        // --- Event Listeners ---
+        nextBtn.addEventListener("click", goToNextStep);
+        backBtn.addEventListener("click", goToPreviousStep);
+        submitBtn.addEventListener("click", goToNextStep);
+
+        document.querySelectorAll(".selection-card").forEach((card) => {
+          card.addEventListener("click", () => {
+            const type = card.dataset.type;
+            const value = card.dataset.value;
+            formData[type] = value;
+            document.getElementById(type).value = value;
+
+            document
+              .querySelectorAll(`.selection-card[data-type="${type}"]`)
+              .forEach((c) => c.classList.remove("selected"));
+            card.classList.add("selected");
+
+            setTimeout(goToNextStep, 300);
+          });
+        });
+
+        // Initial render
+        updateView();
+      });
+    </script>
+  </body>
+</html>
